@@ -94,7 +94,7 @@ public class Interface {
         char[][] tablero2 = juego.getTablero();
         for (int i = 0; i < tablero2.length; i++) {
             for (int j = 0; j < tablero2[0].length; j++) {
-                    System.out.print("| " + tablero2[i][j] + " "); 
+                System.out.print("| " + tablero2[i][j] + " "); 
             }
             System.out.println("|"); 
             if (i < tablero2.length - 1) {

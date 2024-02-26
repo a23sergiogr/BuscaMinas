@@ -8,6 +8,7 @@ package buscaminas;
  * @version 1.0
  */
 public class BuscaMinas {
+    private boolean primeraJugada = true;
     private int[][] tablero;
     private int[][] visible;
     private int minas, filas, columnas;
@@ -35,7 +36,6 @@ public class BuscaMinas {
             this.visible = new int[DEFAULT_SIZE][DEFAULT_SIZE];
         }
         inicializarTablero();
-        colocarMinas();
     }
 
     /**
@@ -53,6 +53,9 @@ public class BuscaMinas {
             for (int j = 0; j < this.columnas; j++) {
                 if (this.visible[i][j] == 0) {
                     tableroVisible[i][j] = (char) (this.tablero[i][j] + '0');
+                    if(this.tablero[i][j] == 0){
+                        tableroVisible[i][j] = ' ';
+                    }
                     if(this.tablero[i][j] == 9){
                         tableroVisible[i][j] = 'M'; 
                     }
@@ -76,24 +79,31 @@ public class BuscaMinas {
         }
     }
 
-    private void colocarMinas() {
+    private void colocarMinas(int filaJugada, int columnaJugada) {
         int numeroMinas = 0;
         while (numeroMinas < this.minas) {
             int fila = (int) (Math.random() * this.filas);
             int columna = (int) (Math.random() * this.columnas);
-            if (this.tablero[fila][columna] != 9) {
+            if (this.tablero[fila][columna] != 9 && !(tableroCercano(fila, columna, filaJugada, columnaJugada))) {
                 this.tablero[fila][columna] = 9;
                 numeroMinas++;
-            }
-            
-            for (int i = Math.max(0, fila - 1); i <= Math.min(this.filas - 1, fila + 1); i++) {
-                for (int j = Math.max(0, columna - 1); j <= Math.min(this.columnas - 1, columna + 1); j++) {
-                    if (!(i == fila && j == columna) && this.tablero[i][j] != 9) {
-                        this.tablero[i][j]++;
+
+                for (int i = Math.max(0, fila - 1); i <= Math.min(this.filas - 1, fila + 1); i++) {
+                    for (int j = Math.max(0, columna - 1); j <= Math.min(this.columnas - 1, columna + 1); j++) {
+                        if (!(i == fila && j == columna) && this.tablero[i][j] != 9) {
+                            this.tablero[i][j]++;
+                        }
                     }
                 }
             }
         }
+    }
+
+    private boolean tableroCercano(int fila, int columna, int filaJugada, int columnaJugada) {
+        if (fila >= filaJugada - 2 && fila <= filaJugada + 2 && columna >= columnaJugada - 2 && columna <= columnaJugada + 2) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -104,6 +114,10 @@ public class BuscaMinas {
      * @return true si el jugador no ha perdido, false en caso contrario.
      */
     public boolean descubrirCasilla(int fila, int columna) {
+        if (this.primeraJugada) {
+            colocarMinas(fila, columna);
+            this.primeraJugada = false;
+        }
         try {
             if (this.tablero[fila][columna] == 9) {
                 for (int i = 0; i < this.filas; i++) {
@@ -134,7 +148,14 @@ public class BuscaMinas {
                     descubrirCasillaRecursivo(fila, columna - 1);
                 if(columna < this.columnas - 1)
                     descubrirCasillaRecursivo(fila, columna + 1);
-
+                if(fila >= 1 && columna >= 1)
+                    descubrirCasillaRecursivo(fila - 1, columna - 1);
+                if(fila >= 1 && columna < this.columnas - 1)
+                    descubrirCasillaRecursivo(fila - 1, columna + 1);
+                if(fila < this.filas - 1 && columna >= 1)
+                    descubrirCasillaRecursivo(fila + 1, columna - 1);
+                if(fila < this.filas - 1 && columna < this.columnas - 1)
+                    descubrirCasillaRecursivo(fila + 1, columna + 1);
             }
         }
     }
