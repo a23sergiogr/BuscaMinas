@@ -16,8 +16,8 @@ public class BuscaMinas {
     /**
      * Clase que representa el juego BuscaMinas.
      * 
-     * @param fila    La fila de la casilla que se desea descubrir.
-     * @param columna La columna de la casilla que se desea descubrir.
+     * @param fila    Numero de filas del tablero.
+     * @param columna Numero de columnas del tablero.
      * @param minas   El número de minas que se colocarán en el tablero.
      */
     public BuscaMinas(int filas, int columnas, int minas) {
