@@ -13,6 +13,13 @@ public class BuscaMinas {
     private int minas, filas, columnas;
     private static final int DEFAULT_SIZE = 10;
 
+    /**
+     * Clase que representa el juego BuscaMinas.
+     * 
+     * @param fila    La fila de la casilla que se desea descubrir.
+     * @param columna La columna de la casilla que se desea descubrir.
+     * @param minas   El número de minas que se colocarán en el tablero.
+     */
     public BuscaMinas(int filas, int columnas, int minas) {
         try {
             this.filas = filas;
