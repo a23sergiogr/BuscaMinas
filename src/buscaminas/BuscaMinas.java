@@ -5,7 +5,7 @@ package buscaminas;
  * 
  *
  * @author a23SergioGR
- * @version 1.0
+ * @version 1.1
  */
 public class BuscaMinas {
     private boolean primeraJugada = true;
